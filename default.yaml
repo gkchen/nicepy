@@ -1,0 +1,45 @@
+DataLoader:
+  type: TofDataLoader
+  params:
+    path: directory
+    delimiter: _
+    keys:
+      - voltage
+      - time
+      - index
+DataProcessor:
+  type: TofDataProcessor
+  params:
+    use_fluor: true
+    time_to_mass:
+      factor: -1
+      offset: 1
+    noise_range:
+      units: mass
+      min: 30
+      max: 33
+    bkg_range:
+      inits: mass
+      min: 30
+      max: 33
+DataAggregator:
+  type: TofDataAggregator
+  params:
+    masses:
+      C: 12
+      H2O: 18
+      HOC/COH:
+        - 28.5
+        - 29.5
+    groupby_keys:
+      - time
+      - index
+DataWriter:
+  path: path
+  writers:
+    - type: CsvDataWriter
+    - type: PlotDataWriter
+      params:
+        figsize:
+          - 20
+          - 20
